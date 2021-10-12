@@ -21,10 +21,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/top', function () {
-    return view('top');
-});
+Route::get('/top', [App\Http\Controllers\TopController::class, 'index']);
 
-Route::get('/top/{any}', function () {
-    return view('top');
-})->where('any','.*');
+Route::get('/top/{any}', [App\Http\Controllers\TopController::class, 'index'])->where('any','.*');

@@ -21,6 +21,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/top', [App\Http\Controllers\TopController::class, 'index']);
+Route::get('/top', [App\Http\Controllers\TopController::class, 'index'])->name('top');
 
 Route::get('/top/{any}', [App\Http\Controllers\TopController::class, 'index'])->where('any','.*');

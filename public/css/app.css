@@ -10004,3 +10004,33 @@ h3 {
     border-color: #dee2e6;
   }
 }
+.calender-nav {
+  margin: 3rem 0;
+  display: flex;
+  justify-content: end;
+  font-size: 1.5rem;
+}
+.calender-nav button {
+  border: none;
+  background-color: transparent;
+  margin-left: 1rem;
+}
+
+.calender-table {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 2rem;
+}
+.calender-table thead {
+  border-bottom: 2px solid silver;
+}
+.calender-table tbody tr {
+  height: 5rem;
+}
+.calender-table tbody tr th:hover {
+  background-color: silver;
+}
+.calender-table tbody tr th.today {
+  border-bottom: 2px solid red;
+}

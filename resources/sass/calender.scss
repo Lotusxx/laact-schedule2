@@ -1,0 +1,30 @@
+.calender-nav{
+    margin:3rem 0;
+    display: flex;
+    justify-content: end;
+    font-size:1.5rem;
+    button{
+        border: none;
+        background-color: transparent;
+        margin-left:1rem;
+    }
+}
+
+.calender-table{
+    width:80%;
+    margin:0 auto;
+    text-align: center;
+    font-size:2rem;
+    thead{
+        border-bottom: 2px solid silver;
+    }
+    tbody tr{
+        height:5rem;
+        th:hover{
+            background-color: silver;
+        }
+        th.today{
+            border-bottom:2px solid red;
+        }
+    }
+}

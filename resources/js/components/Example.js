@@ -6,6 +6,10 @@ function Example(){
 
     const [month,setMonth] = useState(new Date().getMonth()+1)
 
+    const thisyear = new Date().getFullYear()
+    const thismonth = new Date().getMonth()+1
+    const nowday = new Date().getDate()
+
     const calendar = createCalendear(year,month)
 
     const onClick = n => () => {
@@ -24,11 +28,11 @@ function Example(){
     return (
         <Fragment>
             <h1>{`${year}年${month}月`}</h1>
-            <div>
-                <button onClick={onClick(-1)}>{'prev'}</button>
-                <button onClick={onClick(1)}>{'next'}</button>
+            <div className="calender-nav">
+                <button onClick={onClick(-1)}>{'<先月'}</button>
+                <button onClick={onClick(1)}>{'翌月>'}</button>
             </div>
-            <table>
+            <table className="calender-table">
                 <thead>
                     <tr>
                         <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
@@ -38,7 +42,7 @@ function Example(){
                     {calendar.map((week,i) => (
                         <tr key={week.join('')}>
                             {week.map((day,j) => (
-                                <th key={`${i}${j}`}>{day}</th>
+                                <th key={`${i}${j}`} className={thisyear == year && thismonth == month && nowday == day && 'today'}>{day}</th>
                             ))}
                         </tr>
                     ))}

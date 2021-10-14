@@ -2163,6 +2163,9 @@ function Example() {
       month = _useState4[0],
       setMonth = _useState4[1];
 
+  var thisyear = new Date().getFullYear();
+  var thismonth = new Date().getMonth() + 1;
+  var nowday = new Date().getDate();
   var calendar = createCalendear(year, month);
 
   var onClick = function onClick(n) {
@@ -2185,14 +2188,16 @@ function Example() {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
       children: "".concat(year, "\u5E74").concat(month, "\u6708")
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      className: "calender-nav",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
         onClick: onClick(-1),
-        children: 'prev'
+        children: '<先月'
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
         onClick: onClick(1),
-        children: 'next'
+        children: '翌月>'
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("table", {
+      className: "calender-table",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("thead", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
@@ -2216,6 +2221,7 @@ function Example() {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("tr", {
             children: week.map(function (day, j) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                className: thisyear == year && thismonth == month && nowday == day && 'today',
                 children: day
               }, "".concat(i).concat(j));
             })

@@ -1,5 +1,6 @@
-import React,{Fragment,useState} from 'react';
+import React,{Fragment,useState,useEffect} from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 
 function Example(){
     const [year,setYear] = useState(new Date().getFullYear())
@@ -23,7 +24,27 @@ function Example(){
         } else {
           setMonth(nextMonth)
         }
-      }
+    }
+
+    //スケジュールのデータ
+    const [schedules,setSche] = useState([])
+
+    //画面読み込み時に、1度だけ起動
+    useEffect(()=>{
+        getPostData();
+    },[])
+
+    //バックエンドからデータ一覧を取得
+    const getPostData = () =>{
+        axios
+        .get('/api/posts')
+        .then(response=>{
+            setSche(response.data); //バックエンドからのデータでスケジュールを更新
+            console.log(response.data); //確認用ログ
+        }).catch(()=>{
+            console.log('通信に失敗しました');
+        });
+    }
 
     return (
         <Fragment>

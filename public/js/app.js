@@ -2206,8 +2206,20 @@ function Example() {
     })["catch"](function () {
       console.log('通信に失敗しました');
     });
-  };
+  }; //データ格納の空配列を作成
 
+
+  var rows = []; //スケジュールデータをrowに格納する
+
+  schedules.map(function (post) {
+    return rows.push({
+      sch_category: post.sch_category,
+      sch_contents: post.sch_contents,
+      sch_date: post.sch_date,
+      sch_time: post.sch_time,
+      sch_title: post.sch_title
+    });
+  });
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
       children: "".concat(year, "\u5E74").concat(month, "\u6708")
@@ -2244,14 +2256,22 @@ function Example() {
         children: calendar.map(function (week, i) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
             children: week.map(function (day, j) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("th", {
                 className: thisyear == year && thismonth == month && nowday == day && 'today',
-                children: day
+                children: [day, rows.map(function (row, index) {
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+                    children: row.sch_date == year + '-' + month + '-' + zeroPadding(day) && '〇'
+                  }, index);
+                })]
               }, "".concat(i).concat(j));
             })
           }, week.join(''));
         })
       })]
+    }), rows.map(function (row, index) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
+        children: [row.sch_date, row.sch_time, row.sch_category, row.sch_contents, row.sch_title]
+      }, index);
     })]
   });
 }
@@ -2265,6 +2285,10 @@ function createCalendear(year, month) {
       return day - 1 < first || last < day - first ? null : day - first;
     });
   });
+}
+
+function zeroPadding(num) {
+  return ('0' + num).slice(-2);
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Example);

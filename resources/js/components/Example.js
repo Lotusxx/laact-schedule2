@@ -4,7 +4,6 @@ import axios from 'axios';
 
 function Example(){
     const [year,setYear] = useState(new Date().getFullYear())
-
     const [month,setMonth] = useState(new Date().getMonth()+1)
 
     const thisyear = new Date().getFullYear()
@@ -46,6 +45,20 @@ function Example(){
         });
     }
 
+    //データ格納の空配列を作成
+    let rows = [];
+
+    //スケジュールデータをrowに格納する
+    schedules.map((post)=>
+        rows.push({
+            sch_category:post.sch_category,
+            sch_contents:post.sch_contents,
+            sch_date:post.sch_date,
+            sch_time:post.sch_time,
+            sch_title:post.sch_title
+        })
+    );
+
     return (
         <Fragment>
             <h1>{`${year}年${month}月`}</h1>
@@ -63,12 +76,28 @@ function Example(){
                     {calendar.map((week,i) => (
                         <tr key={week.join('')}>
                             {week.map((day,j) => (
-                                <th key={`${i}${j}`} className={thisyear == year && thismonth == month && nowday == day && 'today'}>{day}</th>
+                                <th key={`${i}${j}`} className={thisyear == year && thismonth == month && nowday == day && 'today'}>
+                                    {day}
+                                    {rows.map((row, index) => (
+                                        <p key={index}>
+                                        {row.sch_date == year + '-' + month + '-' + zeroPadding(day) && '〇' }
+                                        </p>
+                                    ))}   
+                                </th>
                             ))}
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {rows.map((row, index) => (
+              <p key={index}>
+                  {row.sch_date}
+                  {row.sch_time}
+                  {row.sch_category}
+                  {row.sch_contents}
+                  {row.sch_title}
+              </p>
+          ))}
         </Fragment>
     );
 }
@@ -83,6 +112,10 @@ function createCalendear(year,month){
             return day - 1 < first || last < day - first ? null : day - first
         })
     })
+}
+
+function zeroPadding(num){
+    return ('0' + num).slice(-2);
 }
 
 export default Example;

@@ -5,6 +5,8 @@ import axios from 'axios';
 function Example(){
     const [year,setYear] = useState(new Date().getFullYear())
     const [month,setMonth] = useState(new Date().getMonth()+1)
+    const last = new Date(year,month,0).getDate()
+    const prevlast = new Date(year,month-1,0).getDate()
 
     const thisyear = new Date().getFullYear()
     const thismonth = new Date().getMonth()+1
@@ -61,10 +63,12 @@ function Example(){
 
     return (
         <Fragment>
-            <h1>{`${year}年${month}月`}</h1>
-            <div className="calender-nav">
-                <button onClick={onClick(-1)}>{'<先月'}</button>
-                <button onClick={onClick(1)}>{'翌月>'}</button>
+            <div className="calender-header">
+                <h1>{`${year}年${month}月`}</h1>
+                <div className="calender-nav">
+                    <button onClick={onClick(-1)}>{'<先月'}</button>
+                    <button onClick={onClick(1)}>{'翌月>'}</button>
+                </div>
             </div>
             <table className="calender-table">
                 <thead>
@@ -76,14 +80,19 @@ function Example(){
                     {calendar.map((week,i) => (
                         <tr key={week.join('')}>
                             {week.map((day,j) => (
-                                <th key={`${i}${j}`} className={thisyear == year && thismonth == month && nowday == day && 'today'}>
-                                    {day}
-                                    {rows.map((row, index) => (
-                                        <p key={index}>
-                                        {row.sch_date == year + '-' + month + '-' + zeroPadding(day) && '〇' }
-                                        </p>
-                                    ))}   
-                                </th>
+                                <td key={`${i}${j}`} className={thisyear == year && thismonth == month && nowday == day && 'today'}>
+                                    <div>
+                                        <div className={day <= 0 || day > last ? 'nschedule-date':'schedule-date'}>
+                                            {day > last ? day - last : day <= 0 ? prevlast + day : day}
+                                        </div>
+                                        <div className="schedule-area"> 
+                                            {rows.map((row, index) => (
+                                                row.sch_date == year + '-' + month + '-' + zeroPadding(day) && 
+                                                    <div key={index} className='schedule-title'>{cutString(row.sch_title)}</div>
+                                            ))}
+                                        </div>
+                                    </div> 
+                                </td>
                             ))}
                         </tr>
                     ))}
@@ -104,18 +113,21 @@ function Example(){
 
 function createCalendear(year,month){
     const first = new Date(year,month - 1,1).getDay()
-    const last = new Date(year,month,0).getDate()
 
     return [0,1,2,3,4,5].map((weekIndex) => {
         return [0,1,2,3,4,5,6].map((dayIndex) => {
             const day = dayIndex + 1 + weekIndex * 7
-            return day - 1 < first || last < day - first ? null : day - first
+            return day - first 
         })
     })
 }
 
 function zeroPadding(num){
     return ('0' + num).slice(-2);
+}
+
+function cutString(str){
+    return str.substr(0,8) + '...';
 }
 
 export default Example;

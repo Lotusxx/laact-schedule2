@@ -2166,6 +2166,8 @@ function Example() {
       month = _useState4[0],
       setMonth = _useState4[1];
 
+  var last = new Date(year, month, 0).getDate();
+  var prevlast = new Date(year, month - 1, 0).getDate();
   var thisyear = new Date().getFullYear();
   var thismonth = new Date().getMonth() + 1;
   var nowday = new Date().getDate();
@@ -2221,16 +2223,19 @@ function Example() {
     });
   });
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
-      children: "".concat(year, "\u5E74").concat(month, "\u6708")
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-      className: "calender-nav",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        onClick: onClick(-1),
-        children: '<先月'
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        onClick: onClick(1),
-        children: '翌月>'
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      className: "calender-header",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+        children: "".concat(year, "\u5E74").concat(month, "\u6708")
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        className: "calender-nav",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          onClick: onClick(-1),
+          children: '<先月'
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          onClick: onClick(1),
+          children: '翌月>'
+        })]
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
       className: "calender-table",
@@ -2256,13 +2261,22 @@ function Example() {
         children: calendar.map(function (week, i) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
             children: week.map(function (day, j) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("th", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
                 className: thisyear == year && thismonth == month && nowday == day && 'today',
-                children: [day, rows.map(function (row, index) {
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
-                    children: row.sch_date == year + '-' + month + '-' + zeroPadding(day) && '〇'
-                  }, index);
-                })]
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                    className: day <= 0 || day > last ? 'nschedule-date' : 'schedule-date',
+                    children: day > last ? day - last : day <= 0 ? prevlast + day : day
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                    className: "schedule-area",
+                    children: rows.map(function (row, index) {
+                      return row.sch_date == year + '-' + month + '-' + zeroPadding(day) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                        className: "schedule-title",
+                        children: cutString(row.sch_title)
+                      }, index);
+                    })
+                  })]
+                })
               }, "".concat(i).concat(j));
             })
           }, week.join(''));
@@ -2278,17 +2292,20 @@ function Example() {
 
 function createCalendear(year, month) {
   var first = new Date(year, month - 1, 1).getDay();
-  var last = new Date(year, month, 0).getDate();
   return [0, 1, 2, 3, 4, 5].map(function (weekIndex) {
     return [0, 1, 2, 3, 4, 5, 6].map(function (dayIndex) {
       var day = dayIndex + 1 + weekIndex * 7;
-      return day - 1 < first || last < day - first ? null : day - first;
+      return day - first;
     });
   });
 }
 
 function zeroPadding(num) {
   return ('0' + num).slice(-2);
+}
+
+function cutString(str) {
+  return str.substr(0, 8) + '...';
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Example);

@@ -10031,7 +10031,7 @@ h3 {
 .calender-table thead th {
   border: 1px solid silver;
 }
-.calender-table tbody tr th:hover {
+.calender-table tbody tr td:hover {
   background-color: silver;
 }
 .calender-table tbody tr td {

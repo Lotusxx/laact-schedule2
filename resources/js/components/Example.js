@@ -1,12 +1,52 @@
 import React,{Fragment,useState,useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import Dialog from '@mui/material/Dialog';
+import Button from '@mui/material/Button';
+import DialogTitle from '@mui/material/DialogTitle';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import { blue } from '@mui/material/colors';
+
+//テスト
+const emails = ['username@gmail.com', 'user02@gmail.com'];
+
+//Simpleダイアログテスト
+function SimpleDialog(props){
+    const{onClose,selectedValue,open}=props;
+
+    const handleClose = () =>{
+        onClose(selectedValue);
+    };
+
+    return (
+        <Dialog onClose={handleClose} open={open}>
+            <DialogTitle>Set backup account</DialogTitle>
+            <List sx={{pt:0}}>
+                {emails.map((email)=>(
+                    <ListItem button key={email}>
+                        <ListItemText primary={email} />
+                    </ListItem>
+                ))}
+            </List>
+        </Dialog>
+    );
+}
+
+SimpleDialog.propTypes = {
+    onClose:PropTypes.func.isRequired,
+    open:PropTypes.bool.isRequired,
+    selectedValue:PropTypes.string.isRequired,
+};
 
 function Example(){
     const [year,setYear] = useState(new Date().getFullYear())
     const [month,setMonth] = useState(new Date().getMonth()+1)
     const last = new Date(year,month,0).getDate()
     const prevlast = new Date(year,month-1,0).getDate()
+    var schenum = 0
 
     const thisyear = new Date().getFullYear()
     const thismonth = new Date().getMonth()+1
@@ -61,6 +101,19 @@ function Example(){
         })
     );
 
+    //ダイアログテスト、ここから
+    const[open,setOpen] = useState(false);
+    const[selectedValue,setSelectedValue] = useState(emails[1]);
+
+    const handleClickOpen = () =>{
+        setOpen(true);
+    };
+
+    const handleClose = (value) =>{
+        setOpen(false);
+        setSelectedValue(value);
+    };
+
     return (
         <Fragment>
             <div className="calender-header">
@@ -80,18 +133,18 @@ function Example(){
                     {calendar.map((week,i) => (
                         <tr key={week.join('')}>
                             {week.map((day,j) => (
-                                <td key={`${i}${j}`} className={thisyear == year && thismonth == month && nowday == day && 'today'}>
+                                <td key={`${i}${j}`} className={thisyear == year && thismonth == month && nowday == day && 'today'} >
                                     <div>
                                         <div className={day <= 0 || day > last ? 'nschedule-date':'schedule-date'}>
                                             {day > last ? day - last : day <= 0 ? prevlast + day : day}
                                         </div>
                                         <div className="schedule-area"> 
                                             {rows.map((row, index) => (
-                                                row.sch_date == year + '-' + month + '-' + zeroPadding(day) && 
+                                                row.sch_date == year + '-' + month + '-' + zeroPadding(day) && index < 4 && 
                                                     <div key={index} className='schedule-title'>{cutString(row.sch_title)}</div>
                                             ))}
                                         </div>
-                                    </div> 
+                                    </div>
                                 </td>
                             ))}
                         </tr>
@@ -106,7 +159,15 @@ function Example(){
                   {row.sch_contents}
                   {row.sch_title}
               </p>
-          ))}
+            ))}
+            <Button variant="outlined" onClick={handleClickOpen}>
+                    Open simple dialogだよー
+            </Button>
+            <SimpleDialog
+                selectedValue={selectedValue}
+                open={open}
+                onClose={handleClose}
+            />
         </Fragment>
     );
 }

@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import TextField from '@mui/material/TextField';
+import DialogContentText from '@mui/material/DialogContentText';
 import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
 import List from '@mui/material/List';
@@ -23,14 +27,25 @@ function SimpleDialog(props){
 
     return (
         <Dialog onClose={handleClose} open={open}>
-            <DialogTitle>Set backup account</DialogTitle>
-            <List sx={{pt:0}}>
-                {emails.map((email)=>(
-                    <ListItem button key={email}>
-                        <ListItemText primary={email} />
-                    </ListItem>
-                ))}
-            </List>
+            <DialogTitle>Subscribe</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                To subscribe to this website, please enter your email address here. We will send updates occasionally.
+                </DialogContentText>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Email Address"
+                    type="email"
+                    fullWidth
+                    variant="standard"
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={handleClose}>Subscribe</Button>
+            </DialogActions>
         </Dialog>
     );
 }
@@ -46,7 +61,6 @@ function Example(){
     const [month,setMonth] = useState(new Date().getMonth()+1)
     const last = new Date(year,month,0).getDate()
     const prevlast = new Date(year,month-1,0).getDate()
-    var schenum = 0
 
     const thisyear = new Date().getFullYear()
     const thismonth = new Date().getMonth()+1
@@ -140,7 +154,7 @@ function Example(){
                                         </div>
                                         <div className="schedule-area"> 
                                             {rows.map((row, index) => (
-                                                row.sch_date == year + '-' + month + '-' + zeroPadding(day) && index < 4 && 
+                                                row.sch_date == year + '-' + month + '-' + zeroPadding(day) && 
                                                     <div key={index} className='schedule-title'>{cutString(row.sch_title)}</div>
                                             ))}
                                         </div>
@@ -161,7 +175,7 @@ function Example(){
               </p>
             ))}
             <Button variant="outlined" onClick={handleClickOpen}>
-                    Open simple dialogだよー
+                    Open form dialogだよー
             </Button>
             <SimpleDialog
                 selectedValue={selectedValue}

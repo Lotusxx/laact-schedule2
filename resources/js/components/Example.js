@@ -9,17 +9,16 @@ import TextField from '@mui/material/TextField';
 import DialogContentText from '@mui/material/DialogContentText';
 import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import { blue } from '@mui/material/colors';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 //テスト
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 
 //Simpleダイアログテスト
 function SimpleDialog(props){
-    const{onClose,selectedValue,open}=props;
+    const{onClose,selectedValue,open,btnFunc,data,inputChange}=props;
 
     const handleClose = () =>{
         onClose(selectedValue);
@@ -32,19 +31,21 @@ function SimpleDialog(props){
                 <DialogContentText>
                 To subscribe to this website, please enter your email address here. We will send updates occasionally.
                 </DialogContentText>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Email Address"
-                    type="email"
-                    fullWidth
-                    variant="standard"
-                />
+                <TextField margin="dense" id="sch_date" name="sch_date" label="予定日" type="text" fullWidth variant="standard" value={data.sch_date} onChange={inputChange}/>
+                <TextField margin="dense" id="sch_time" name="sch_time" label="予定時刻" type="text" fullWidth variant="standard" value={data.sch_time} onChange={inputChange}/>
+                <InputLabel id="sch_category">カテゴリー</InputLabel>
+                <Select labelId="sch_category" id="sch_category_select" name="sch_category" label="Category" value={data.sch_category} onChange={inputChange}>
+                    <MenuItem value="勉強">勉強</MenuItem>
+                    <MenuItem value="案件">案件</MenuItem>
+                    <MenuItem value="テスト">テスト</MenuItem>
+                </Select>
+                <TextField margin="dense" id="sch_category" name="sch_category" label="カテゴリー" type="text" fullWidth variant="standard" value={data.sch_category} onChange={inputChange}/>
+                <TextField margin="dense" id="sch_title" name="sch_title" label="タイトル" type="text" fullWidth variant="standard" value={data.sch_title} onChange={inputChange}/>
+                <TextField margin="dense" id="sch_contents" name="sch_contents" label="内容" type="text" fullWidth variant="standard"  value={data.sch_contents} onChange={inputChange}/>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleClose}>Subscribe</Button>
+                <Button href="/top" onClick={btnFunc}>Subscribe</Button>
             </DialogActions>
         </Dialog>
     );
@@ -128,6 +129,45 @@ function Example(){
         setSelectedValue(value);
     };
 
+    //ダイアログのデータを一時保存する
+    const [formData,setFormData] = useState({sch_category:'',sch_contents:'',sch_date:'',sch_time:'',sch_title:''});
+
+    //入力値を一時保存
+    const inputChange = (e) =>{
+        const key = e.target.name;
+        const value = e.target.value;
+        formData[key] = value;
+        let data = Object.assign({},formData);
+        setFormData(data);
+    }
+
+    //ダイアログデータを登録
+    const createSchedule = async() => {
+        //空なら弾く
+        if(formData==''){
+            return;
+        }
+        //入力値を投げる
+        await axios
+            .post('/api/post/create',{
+                sch_category:post.sch_category,
+                sch_contents:post.sch_contents,
+                sch_date:post.sch_date,
+                sch_time:post.sch_time,
+                sch_title:post.sch_title
+            })
+            .then((res)=>{
+                //戻り値をtodosにセット
+                const tempPosts = post
+                tempPosts.push(res.data);
+                setPosts(tempPosts)
+                setFormData('');
+            })
+            .catch(error=>{
+                console.log(error);
+            })
+    }
+
     return (
         <Fragment>
             <div className="calender-header">
@@ -181,6 +221,9 @@ function Example(){
                 selectedValue={selectedValue}
                 open={open}
                 onClose={handleClose}
+                btnFunc={createSchedule}
+                data = {formData}
+                inputChange = {inputChange}
             />
         </Fragment>
     );

@@ -39,7 +39,6 @@ function SimpleDialog(props){
                     <MenuItem value="案件">案件</MenuItem>
                     <MenuItem value="テスト">テスト</MenuItem>
                 </Select>
-                <TextField margin="dense" id="sch_category" name="sch_category" label="カテゴリー" type="text" fullWidth variant="standard" value={data.sch_category} onChange={inputChange}/>
                 <TextField margin="dense" id="sch_title" name="sch_title" label="タイトル" type="text" fullWidth variant="standard" value={data.sch_title} onChange={inputChange}/>
                 <TextField margin="dense" id="sch_contents" name="sch_contents" label="内容" type="text" fullWidth variant="standard"  value={data.sch_contents} onChange={inputChange}/>
             </DialogContent>
@@ -149,12 +148,12 @@ function Example(){
         }
         //入力値を投げる
         await axios
-            .post('/api/post/create',{
-                sch_category:post.sch_category,
-                sch_contents:post.sch_contents,
-                sch_date:post.sch_date,
-                sch_time:post.sch_time,
-                sch_title:post.sch_title
+            .post('/api/posts/create',{
+                sch_category:formData.sch_category,
+                sch_contents:formData.sch_contents,
+                sch_date:formData.sch_date,
+                sch_time:formData.sch_time,
+                sch_title:formData.sch_title
             })
             .then((res)=>{
                 //戻り値をtodosにセット

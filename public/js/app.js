@@ -22307,16 +22307,6 @@ function SimpleDialog(props) {
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_10__["default"], {
         margin: "dense",
-        id: "sch_category",
-        name: "sch_category",
-        label: "\u30AB\u30C6\u30B4\u30EA\u30FC",
-        type: "text",
-        fullWidth: true,
-        variant: "standard",
-        value: data.sch_category,
-        onChange: inputChange
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_10__["default"], {
-        margin: "dense",
         id: "sch_title",
         name: "sch_title",
         label: "\u30BF\u30A4\u30C8\u30EB",
@@ -22341,7 +22331,7 @@ function SimpleDialog(props) {
         onClick: handleClose,
         children: "Cancel"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_Button__WEBPACK_IMPORTED_MODULE_15__["default"], {
-        href: "/",
+        href: "/top",
         onClick: btnFunc,
         children: "Subscribe"
       })]
@@ -22479,12 +22469,12 @@ function Example() {
 
             case 2:
               _context.next = 4;
-              return axios__WEBPACK_IMPORTED_MODULE_3___default().post('/api/post/create', {
-                sch_category: post.sch_category,
-                sch_contents: post.sch_contents,
-                sch_date: post.sch_date,
-                sch_time: post.sch_time,
-                sch_title: post.sch_title
+              return axios__WEBPACK_IMPORTED_MODULE_3___default().post('/api/posts/create', {
+                sch_category: formData.sch_category,
+                sch_contents: formData.sch_contents,
+                sch_date: formData.sch_date,
+                sch_time: formData.sch_time,
+                sch_title: formData.sch_title
               }).then(function (res) {
                 //戻り値をtodosにセット
                 var tempPosts = post;

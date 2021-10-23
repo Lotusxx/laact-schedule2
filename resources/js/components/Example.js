@@ -12,16 +12,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-
-//テスト
-const emails = ['username@gmail.com', 'user02@gmail.com'];
+import { Panorama } from '@mui/icons-material';
 
 //Simpleダイアログテスト
 function SimpleDialog(props){
-    const{onClose,selectedValue,open,btnFunc,data,inputChange}=props;
+    const{onClose,open,btnFunc,data,inputChange}=props;
 
     const handleClose = () =>{
-        onClose(selectedValue);
+        onClose();
     };
 
     return (
@@ -34,7 +32,7 @@ function SimpleDialog(props){
                 <TextField margin="dense" id="sch_date" name="sch_date" label="予定日" type="text" fullWidth variant="standard" value={data.sch_date} onChange={inputChange}/>
                 <TextField margin="dense" id="sch_time" name="sch_time" label="予定時刻" type="text" fullWidth variant="standard" value={data.sch_time} onChange={inputChange}/>
                 <InputLabel id="sch_category">カテゴリー</InputLabel>
-                <Select labelId="sch_category" id="sch_category_select" name="sch_category" label="Category" value={data.sch_category} onChange={inputChange}>
+                <Select labelId="sch_category" id="sch_category_select" name="sch_category" label="Category" variant="standard"  value={data.sch_category} onChange={inputChange}>
                     <MenuItem value="勉強">勉強</MenuItem>
                     <MenuItem value="案件">案件</MenuItem>
                     <MenuItem value="テスト">テスト</MenuItem>
@@ -53,8 +51,47 @@ function SimpleDialog(props){
 SimpleDialog.propTypes = {
     onClose:PropTypes.func.isRequired,
     open:PropTypes.bool.isRequired,
-    selectedValue:PropTypes.string.isRequired,
 };
+
+//Editダイアログ
+function EditDialog(props){
+    const{onClose,open,btnFunc,data,inputChange}=props;
+
+    const handleClose = () =>{
+        onClose();
+    };
+
+    return (
+        <Dialog onClose={handleClose} open={open}>
+            <DialogTitle>Subscribe</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                To subscribe to this website, please enter your email address here. We will send updates occasionally.
+                </DialogContentText>
+                <TextField margin="dense" id="sch_date" name="sch_date" label="予定日" type="text" fullWidth variant="standard" value={data.sch_date} onChange={inputChange}/>
+                <TextField margin="dense" id="sch_time" name="sch_time" label="予定時刻" type="text" fullWidth variant="standard" value={data.sch_time} onChange={inputChange}/>
+                <InputLabel id="sch_category">カテゴリー</InputLabel>
+                <Select labelId="sch_category" id="sch_category_select" name="sch_category" label="Category" variant="standard"  value={data.sch_category} onChange={inputChange}>
+                    <MenuItem value="勉強">勉強</MenuItem>
+                    <MenuItem value="案件">案件</MenuItem>
+                    <MenuItem value="テスト">テスト</MenuItem>
+                </Select>
+                <TextField margin="dense" id="sch_title" name="sch_title" label="タイトル" type="text" fullWidth variant="standard" value={data.sch_title} onChange={inputChange}/>
+                <TextField margin="dense" id="sch_contents" name="sch_contents" label="内容" type="text" fullWidth variant="standard"  value={data.sch_contents} onChange={inputChange}/>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button href="/top" onClick={btnFunc}>Subscribe</Button>
+            </DialogActions>
+        </Dialog>
+    );
+}
+
+EditDialog.propTypes = {
+    onClose:PropTypes.func.isRequired,
+    open:PropTypes.bool.isRequired,
+};
+
 
 function Example(){
     const [year,setYear] = useState(new Date().getFullYear())
@@ -107,6 +144,7 @@ function Example(){
     //スケジュールデータをrowに格納する
     schedules.map((post)=>
         rows.push({
+            sch_id:post.id,
             sch_category:post.sch_category,
             sch_contents:post.sch_contents,
             sch_date:post.sch_date,
@@ -117,15 +155,14 @@ function Example(){
 
     //ダイアログテスト、ここから
     const[open,setOpen] = useState(false);
-    const[selectedValue,setSelectedValue] = useState(emails[1]);
 
-    const handleClickOpen = () =>{
+    const handleClickOpen = (e) =>{
         setOpen(true);
+        setFormData({sch_date : year + '-' + zeroPadding(month) + '-' + e.currentTarget.id});
     };
 
-    const handleClose = (value) =>{
+    const handleClose = () =>{
         setOpen(false);
-        setSelectedValue(value);
     };
 
     //ダイアログのデータを一時保存する
@@ -167,6 +204,69 @@ function Example(){
             })
     }
 
+    //更新用ダイアログテスト、ここから
+    const[editopen,setEditOpen] = useState(false);
+
+    const editHandleClickOpen = (e) =>{
+        e.stopPropagation();
+        setEditOpen(true);
+        getEditData(e);
+    };
+
+    const editHandleClose = () =>{
+        setEditOpen(false);
+    };
+
+    //バックエンドからデータ一覧を取得
+    function getEditData(e){
+        axios
+            .post('/api/edit', {
+                id: e.currentTarget.id
+            })
+            .then(res => {
+                setEditData(res.data);
+            })
+            .catch(() => {
+                console.log('通信に失敗しました');
+            });
+    }
+
+    //更新用のデータ配列
+    const [editData,setEditData] = useState({id:'',sch_category:'',sch_contents:'',sch_date:'',sch_time:'',sch_title:''});
+
+    //更新処理
+    function updateSchedule(){
+        //空なら弾く
+        if(editData==''){
+            return;
+        }
+        //入力値を投げる
+        axios
+            .post('/api/update',{
+                id:editData.id,
+                sch_category:editData.sch_category,
+                sch_contents:editData.sch_contents,
+                sch_date:editData.sch_date,
+                sch_time:editData.sch_time,
+                sch_title:editData.sch_title
+            })
+            .then((res)=>{
+                //戻り値をtodosにセット
+                setEditData(res.data);
+            })
+            .catch(error=>{
+                console.log(error);
+            })
+    }
+    //値を変更したら登録する
+    function editChange(e){
+        const key = e.target.name;
+        const value = e.target.value;
+        editData[key] = value;
+        let data = Object.assign({},editData);
+        setEditData(data);
+    }
+
     return (
         <Fragment>
             <div className="calender-header">
@@ -186,7 +286,7 @@ function Example(){
                     {calendar.map((week,i) => (
                         <tr key={week.join('')}>
                             {week.map((day,j) => (
-                                <td key={`${i}${j}`} className={thisyear == year && thismonth == month && nowday == day && 'today'} >
+                                <td key={`${i}${j}`} id={day} className={thisyear == year && thismonth == month && nowday == day && 'today'}  onClick={handleClickOpen}>
                                     <div>
                                         <div className={day <= 0 || day > last ? 'nschedule-date':'schedule-date'}>
                                             {day > last ? day - last : day <= 0 ? prevlast + day : day}
@@ -194,7 +294,7 @@ function Example(){
                                         <div className="schedule-area"> 
                                             {rows.map((row, index) => (
                                                 row.sch_date == year + '-' + month + '-' + zeroPadding(day) && 
-                                                    <div key={index} className='schedule-title'>{cutString(row.sch_title)}</div>
+                                                    <div key={index} className='schedule-title' onClick={editHandleClickOpen} id={row.sch_id}>{cutString(row.sch_title)}</div>
                                             ))}
                                         </div>
                                     </div>
@@ -206,6 +306,7 @@ function Example(){
             </table>
             {rows.map((row, index) => (
               <p key={index}>
+                  {row.sch_id}
                   {row.sch_date}
                   {row.sch_time}
                   {row.sch_category}
@@ -213,16 +314,19 @@ function Example(){
                   {row.sch_title}
               </p>
             ))}
-            <Button variant="outlined" onClick={handleClickOpen}>
-                    Open form dialogだよー
-            </Button>
             <SimpleDialog
-                selectedValue={selectedValue}
                 open={open}
                 onClose={handleClose}
                 btnFunc={createSchedule}
                 data = {formData}
                 inputChange = {inputChange}
+            />
+            <EditDialog
+                open={editopen}
+                onClose={editHandleClose}
+                btnFunc={updateSchedule}
+                data = {editData}
+                inputChange = {editChange}
             />
         </Fragment>
     );

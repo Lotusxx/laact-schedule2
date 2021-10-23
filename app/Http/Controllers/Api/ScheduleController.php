@@ -24,4 +24,22 @@ class ScheduleController extends Controller
         $schedules->save();
         return response()->json($schedules);
     }
+
+    //編集画面への遷移
+    public function edit(Request $request){
+        $schedules = Schedule_detail::find($request->id);
+        return $schedules;
+    }
+
+    //データ更新アクション
+    public function update(Request $request){
+        $schedules = Schedule_detail::find($request->id);
+        $schedules->sch_date = $request->sch_date;
+        $schedules->sch_time = $request->sch_time;
+        $schedules->sch_category = $request->sch_category;
+        $schedules->sch_contents = $request->sch_contents;
+        $schedules->sch_title = $request->sch_title;
+        $schedules->save();
+        return $schedules;
+    }
 }

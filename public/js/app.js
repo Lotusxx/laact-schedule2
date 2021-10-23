@@ -22239,22 +22239,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
- //テスト
+
+ //Simpleダイアログテスト
 
 
 
-var emails = ['username@gmail.com', 'user02@gmail.com']; //Simpleダイアログテスト
 
 function SimpleDialog(props) {
   var onClose = props.onClose,
-      selectedValue = props.selectedValue,
       open = props.open,
       btnFunc = props.btnFunc,
       data = props.data,
       inputChange = props.inputChange;
 
   var handleClose = function handleClose() {
-    onClose(selectedValue);
+    onClose();
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -22293,6 +22292,7 @@ function SimpleDialog(props) {
         id: "sch_category_select",
         name: "sch_category",
         label: "Category",
+        variant: "standard",
         value: data.sch_category,
         onChange: inputChange,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
@@ -22341,8 +22341,106 @@ function SimpleDialog(props) {
 
 SimpleDialog.propTypes = {
   onClose: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().func.isRequired),
-  open: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().bool.isRequired),
-  selectedValue: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().string.isRequired)
+  open: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().bool.isRequired)
+}; //Editダイアログ
+
+function EditDialog(props) {
+  var onClose = props.onClose,
+      open = props.open,
+      btnFunc = props.btnFunc,
+      data = props.data,
+      inputChange = props.inputChange;
+
+  var handleClose = function handleClose() {
+    onClose();
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    onClose: handleClose,
+    open: open,
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_DialogTitle__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      children: "Subscribe"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_mui_material_DialogContent__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_DialogContentText__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        children: "To subscribe to this website, please enter your email address here. We will send updates occasionally."
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        margin: "dense",
+        id: "sch_date",
+        name: "sch_date",
+        label: "\u4E88\u5B9A\u65E5",
+        type: "text",
+        fullWidth: true,
+        variant: "standard",
+        value: data.sch_date,
+        onChange: inputChange
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        margin: "dense",
+        id: "sch_time",
+        name: "sch_time",
+        label: "\u4E88\u5B9A\u6642\u523B",
+        type: "text",
+        fullWidth: true,
+        variant: "standard",
+        value: data.sch_time,
+        onChange: inputChange
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_InputLabel__WEBPACK_IMPORTED_MODULE_11__["default"], {
+        id: "sch_category",
+        children: "\u30AB\u30C6\u30B4\u30EA\u30FC"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_mui_material_Select__WEBPACK_IMPORTED_MODULE_12__["default"], {
+        labelId: "sch_category",
+        id: "sch_category_select",
+        name: "sch_category",
+        label: "Category",
+        variant: "standard",
+        value: data.sch_category,
+        onChange: inputChange,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
+          value: "\u52C9\u5F37",
+          children: "\u52C9\u5F37"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
+          value: "\u6848\u4EF6",
+          children: "\u6848\u4EF6"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_13__["default"], {
+          value: "\u30C6\u30B9\u30C8",
+          children: "\u30C6\u30B9\u30C8"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        margin: "dense",
+        id: "sch_title",
+        name: "sch_title",
+        label: "\u30BF\u30A4\u30C8\u30EB",
+        type: "text",
+        fullWidth: true,
+        variant: "standard",
+        value: data.sch_title,
+        onChange: inputChange
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        margin: "dense",
+        id: "sch_contents",
+        name: "sch_contents",
+        label: "\u5185\u5BB9",
+        type: "text",
+        fullWidth: true,
+        variant: "standard",
+        value: data.sch_contents,
+        onChange: inputChange
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_mui_material_DialogActions__WEBPACK_IMPORTED_MODULE_14__["default"], {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_Button__WEBPACK_IMPORTED_MODULE_15__["default"], {
+        onClick: handleClose,
+        children: "Cancel"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_Button__WEBPACK_IMPORTED_MODULE_15__["default"], {
+        href: "/top",
+        onClick: btnFunc,
+        children: "Subscribe"
+      })]
+    })]
+  });
+}
+
+EditDialog.propTypes = {
+  onClose: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().func.isRequired),
+  open: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().bool.isRequired)
 };
 
 function Example() {
@@ -22405,6 +22503,7 @@ function Example() {
 
   schedules.map(function (post) {
     return rows.push({
+      sch_id: post.id,
       sch_category: post.sch_category,
       sch_contents: post.sch_contents,
       sch_date: post.sch_date,
@@ -22418,31 +22517,28 @@ function Example() {
       open = _useState8[0],
       setOpen = _useState8[1];
 
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(emails[1]),
-      _useState10 = _slicedToArray(_useState9, 2),
-      selectedValue = _useState10[0],
-      setSelectedValue = _useState10[1];
-
-  var handleClickOpen = function handleClickOpen() {
+  var handleClickOpen = function handleClickOpen(e) {
     setOpen(true);
+    setFormData({
+      sch_date: year + '-' + zeroPadding(month) + '-' + e.currentTarget.id
+    });
   };
 
-  var handleClose = function handleClose(value) {
+  var handleClose = function handleClose() {
     setOpen(false);
-    setSelectedValue(value);
   }; //ダイアログのデータを一時保存する
 
 
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
     sch_category: '',
     sch_contents: '',
     sch_date: '',
     sch_time: '',
     sch_title: ''
   }),
-      _useState12 = _slicedToArray(_useState11, 2),
-      formData = _useState12[0],
-      setFormData = _useState12[1]; //入力値を一時保存
+      _useState10 = _slicedToArray(_useState9, 2),
+      formData = _useState10[0],
+      setFormData = _useState10[1]; //入力値を一時保存
 
 
   var inputChange = function inputChange(e) {
@@ -22496,7 +22592,79 @@ function Example() {
     return function createSchedule() {
       return _ref.apply(this, arguments);
     };
-  }();
+  }(); //更新用ダイアログテスト、ここから
+
+
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState12 = _slicedToArray(_useState11, 2),
+      editopen = _useState12[0],
+      setEditOpen = _useState12[1];
+
+  var editHandleClickOpen = function editHandleClickOpen(e) {
+    e.stopPropagation();
+    setEditOpen(true);
+    getEditData(e);
+  };
+
+  var editHandleClose = function editHandleClose() {
+    setEditOpen(false);
+  }; //バックエンドからデータ一覧を取得
+
+
+  function getEditData(e) {
+    axios__WEBPACK_IMPORTED_MODULE_3___default().post('/api/edit', {
+      id: e.currentTarget.id
+    }).then(function (res) {
+      setEditData(res.data);
+    })["catch"](function () {
+      console.log('通信に失敗しました');
+    });
+  } //更新用のデータ配列
+
+
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+    id: '',
+    sch_category: '',
+    sch_contents: '',
+    sch_date: '',
+    sch_time: '',
+    sch_title: ''
+  }),
+      _useState14 = _slicedToArray(_useState13, 2),
+      editData = _useState14[0],
+      setEditData = _useState14[1]; //更新処理
+
+
+  function updateSchedule(e) {
+    //空なら弾く
+    if (editData == '') {
+      return;
+    } //入力値を投げる
+
+
+    axios__WEBPACK_IMPORTED_MODULE_3___default().post('/api/update', {
+      id: editData.id,
+      sch_category: editData.sch_category,
+      sch_contents: editData.sch_contents,
+      sch_date: editData.sch_date,
+      sch_time: editData.sch_time,
+      sch_title: editData.sch_title
+    }).then(function (res) {
+      //戻り値をtodosにセット
+      setEditData(res.data);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  } //値を変更したら登録する
+
+
+  function editChange(e) {
+    var key = e.target.name;
+    var value = e.target.value;
+    editData[key] = value;
+    var data = Object.assign({}, editData);
+    setEditData(data);
+  }
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
@@ -22538,7 +22706,9 @@ function Example() {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("tr", {
             children: week.map(function (day, j) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
+                id: day,
                 className: thisyear == year && thismonth == month && nowday == day && 'today',
+                onClick: handleClickOpen,
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
                     className: day <= 0 || day > last ? 'nschedule-date' : 'schedule-date',
@@ -22548,6 +22718,8 @@ function Example() {
                     children: rows.map(function (row, index) {
                       return row.sch_date == year + '-' + month + '-' + zeroPadding(day) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
                         className: "schedule-title",
+                        onClick: editHandleClickOpen,
+                        id: row.sch_id,
                         children: cutString(row.sch_title)
                       }, index);
                     })
@@ -22560,19 +22732,20 @@ function Example() {
       })]
     }), rows.map(function (row, index) {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
-        children: [row.sch_date, row.sch_time, row.sch_category, row.sch_contents, row.sch_title]
+        children: [row.sch_id, row.sch_date, row.sch_time, row.sch_category, row.sch_contents, row.sch_title]
       }, index);
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_Button__WEBPACK_IMPORTED_MODULE_15__["default"], {
-      variant: "outlined",
-      onClick: handleClickOpen,
-      children: "Open form dialog\u3060\u3088\u30FC"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(SimpleDialog, {
-      selectedValue: selectedValue,
       open: open,
       onClose: handleClose,
       btnFunc: createSchedule,
       data: formData,
       inputChange: inputChange
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(EditDialog, {
+      open: editopen,
+      onClose: editHandleClose,
+      btnFunc: updateSchedule,
+      data: editData,
+      inputChange: editChange
     })]
   });
 }

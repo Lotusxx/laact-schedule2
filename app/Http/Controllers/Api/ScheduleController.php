@@ -42,4 +42,12 @@ class ScheduleController extends Controller
         $schedules->save();
         return $schedules;
     }
+
+    //データ削除アクション
+    public function delete(Request $request){
+        $schedule = Schedule_detail::find($request->id);
+        $schedule->delete();
+        $schedules = Schedule_detail::all();
+        return $schedules;
+    }
 }

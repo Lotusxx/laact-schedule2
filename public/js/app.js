@@ -22349,7 +22349,8 @@ function EditDialog(props) {
       open = props.open,
       btnFunc = props.btnFunc,
       data = props.data,
-      inputChange = props.inputChange;
+      inputChange = props.inputChange,
+      onDelete = props.onDelete;
 
   var handleClose = function handleClose() {
     onClose();
@@ -22427,6 +22428,10 @@ function EditDialog(props) {
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_mui_material_DialogActions__WEBPACK_IMPORTED_MODULE_14__["default"], {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_Button__WEBPACK_IMPORTED_MODULE_15__["default"], {
+        href: "/top",
+        onClick: onDelete,
+        children: "Delete"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_Button__WEBPACK_IMPORTED_MODULE_15__["default"], {
         onClick: handleClose,
         children: "Cancel"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material_Button__WEBPACK_IMPORTED_MODULE_15__["default"], {
@@ -22444,6 +22449,8 @@ EditDialog.propTypes = {
 };
 
 function Example() {
+  var _this = this;
+
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(new Date().getFullYear()),
       _useState2 = _slicedToArray(_useState, 2),
       year = _useState2[0],
@@ -22635,7 +22642,7 @@ function Example() {
       setEditData = _useState14[1]; //更新処理
 
 
-  function updateSchedule(e) {
+  function updateSchedule() {
     //空なら弾く
     if (editData == '') {
       return;
@@ -22664,7 +22671,38 @@ function Example() {
     editData[key] = value;
     var data = Object.assign({}, editData);
     setEditData(data);
-  }
+  } //削除処理
+
+
+  var deletePost = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(post) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return axios__WEBPACK_IMPORTED_MODULE_3___default().post('api/delete', {
+                id: editData.id
+              }).then(function (res) {
+                _this.setState({
+                  posts: res.posts
+                });
+              })["catch"](function (error) {
+                console.log(error);
+              });
+
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function deletePost(_x) {
+      return _ref2.apply(this, arguments);
+    };
+  }();
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
@@ -22745,7 +22783,8 @@ function Example() {
       onClose: editHandleClose,
       btnFunc: updateSchedule,
       data: editData,
-      inputChange: editChange
+      inputChange: editChange,
+      onDelete: deletePost
     })]
   });
 }

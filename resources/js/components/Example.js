@@ -55,7 +55,7 @@ SimpleDialog.propTypes = {
 
 //Editダイアログ
 function EditDialog(props){
-    const{onClose,open,btnFunc,data,inputChange}=props;
+    const{onClose,open,btnFunc,data,inputChange,onDelete}=props;
 
     const handleClose = () =>{
         onClose();
@@ -80,6 +80,7 @@ function EditDialog(props){
                 <TextField margin="dense" id="sch_contents" name="sch_contents" label="内容" type="text" fullWidth variant="standard"  value={data.sch_contents} onChange={inputChange}/>
             </DialogContent>
             <DialogActions>
+                <Button href="/top" onClick={onDelete}>Delete</Button>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button href="/top" onClick={btnFunc}>Subscribe</Button>
             </DialogActions>
@@ -91,7 +92,6 @@ EditDialog.propTypes = {
     onClose:PropTypes.func.isRequired,
     open:PropTypes.bool.isRequired,
 };
-
 
 function Example(){
     const [year,setYear] = useState(new Date().getFullYear())
@@ -267,6 +267,22 @@ function Example(){
         setEditData(data);
     }
 
+    //削除処理
+    const deletePost = async(post) =>{
+        await axios
+            .post('api/delete',{
+                id:editData.id
+            })
+            .then((res)=>{
+                this.setState({
+                    posts:res.posts
+                });
+            })
+            .catch(error=>{
+                console.log(error);
+            });
+    }
+
     return (
         <Fragment>
             <div className="calender-header">
@@ -327,6 +343,7 @@ function Example(){
                 btnFunc={updateSchedule}
                 data = {editData}
                 inputChange = {editChange}
+                onDelete = {deletePost}
             />
         </Fragment>
     );

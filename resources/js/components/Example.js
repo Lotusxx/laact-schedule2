@@ -157,6 +157,10 @@ function Example(){
     const[open,setOpen] = useState(false);
 
     const handleClickOpen = (e) =>{
+        //前月、翌月ならそもそも開かない
+        if(e.currentTarget.id<1 || e.currentTarget.id > last){
+            return;
+        }
         setOpen(true);
         setFormData({sch_date : year + '-' + zeroPadding(month) + '-' + e.currentTarget.id});
     };
@@ -308,10 +312,7 @@ function Example(){
                                             {day > last ? day - last : day <= 0 ? prevlast + day : day}
                                         </div>
                                         <div className="schedule-area"> 
-                                            {rows.map((row, index) => (
-                                                row.sch_date == year + '-' + month + '-' + zeroPadding(day) && 
-                                                    <div key={index} className='schedule-title' onClick={editHandleClickOpen} id={row.sch_id}>{cutString(row.sch_title)}</div>
-                                            ))}
+                                            {scheduleDisplay(rows,year,month,day,editHandleClickOpen)}
                                         </div>
                                     </div>
                                 </td>
@@ -320,16 +321,6 @@ function Example(){
                     ))}
                 </tbody>
             </table>
-            {rows.map((row, index) => (
-              <p key={index}>
-                  {row.sch_id}
-                  {row.sch_date}
-                  {row.sch_time}
-                  {row.sch_category}
-                  {row.sch_contents}
-                  {row.sch_title}
-              </p>
-            ))}
             <SimpleDialog
                 open={open}
                 onClose={handleClose}
@@ -347,6 +338,32 @@ function Example(){
             />
         </Fragment>
     );
+}
+
+function scheduleDisplay(rows,year,month,day,editHandleClickOpen){
+    const items = [];
+    let schenum = 0;
+    let totalschenum = 0;
+
+    //スケジュール数把握
+    for(let i=0;i<rows.length;i++){
+        if(rows[i].sch_date == year + '-' + month + '-' + zeroPadding(day)){
+            totalschenum++
+        }
+    }
+
+    //スケジュール出力
+    for(let i=0;i<rows.length;i++){
+        if(rows[i].sch_date == year + '-' + month + '-' + zeroPadding(day) && schenum < 3){
+            items.push(<div className='schedule-title' onClick={editHandleClickOpen} id={rows[i].sch_id}>{cutString(rows[i].sch_title)}</div>);
+            schenum++
+        }else if(schenum == 3){
+            items.push(<div>+{totalschenum-3}more</div>)
+            schenum++
+        }
+    }
+    schenum = 0;
+    return items;
 }
 
 function createCalendear(year,month){

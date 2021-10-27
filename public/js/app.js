@@ -22525,6 +22525,11 @@ function Example() {
       setOpen = _useState8[1];
 
   var handleClickOpen = function handleClickOpen(e) {
+    //前月、翌月ならそもそも開かない
+    if (e.currentTarget.id < 1 || e.currentTarget.id > last) {
+      return;
+    }
+
     setOpen(true);
     setFormData({
       sch_date: year + '-' + zeroPadding(month) + '-' + e.currentTarget.id
@@ -22753,14 +22758,7 @@ function Example() {
                     children: day > last ? day - last : day <= 0 ? prevlast + day : day
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
                     className: "schedule-area",
-                    children: rows.map(function (row, index) {
-                      return row.sch_date == year + '-' + month + '-' + zeroPadding(day) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-                        className: "schedule-title",
-                        onClick: editHandleClickOpen,
-                        id: row.sch_id,
-                        children: cutString(row.sch_title)
-                      }, index);
-                    })
+                    children: scheduleDisplay(rows, year, month, day, editHandleClickOpen)
                   })]
                 })
               }, "".concat(i).concat(j));
@@ -22768,10 +22766,6 @@ function Example() {
           }, week.join(''));
         })
       })]
-    }), rows.map(function (row, index) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
-        children: [row.sch_id, row.sch_date, row.sch_time, row.sch_category, row.sch_contents, row.sch_title]
-      }, index);
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(SimpleDialog, {
       open: open,
       onClose: handleClose,
@@ -22787,6 +22781,39 @@ function Example() {
       onDelete: deletePost
     })]
   });
+}
+
+function scheduleDisplay(rows, year, month, day, editHandleClickOpen) {
+  var items = [];
+  var schenum = 0;
+  var totalschenum = 0; //スケジュール数把握
+
+  for (var i = 0; i < rows.length; i++) {
+    if (rows[i].sch_date == year + '-' + month + '-' + zeroPadding(day)) {
+      totalschenum++;
+    }
+  } //スケジュール出力
+
+
+  for (var _i2 = 0; _i2 < rows.length; _i2++) {
+    if (rows[_i2].sch_date == year + '-' + month + '-' + zeroPadding(day) && schenum < 3) {
+      items.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+        className: "schedule-title",
+        onClick: editHandleClickOpen,
+        id: rows[_i2].sch_id,
+        children: cutString(rows[_i2].sch_title)
+      }));
+      schenum++;
+    } else if (schenum == 3) {
+      items.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        children: ["+", totalschenum - 3, "more"]
+      }));
+      schenum++;
+    }
+  }
+
+  schenum = 0;
+  return items;
 }
 
 function createCalendear(year, month) {

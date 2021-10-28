@@ -1,0 +1,40 @@
+import React from 'react';
+import axios from 'axios';
+import Button from '@mui/material/Button';
+
+function Register(props){
+    const{formData}=props;
+
+    //ダイアログデータを登録
+    const createSchedule = async() => {
+        //空なら弾く
+        if(formData==''){
+            return;
+        }
+        //入力値を投げる
+        await axios
+            .post('/api/posts/create',{
+                sch_category:formData.sch_category,
+                sch_contents:formData.sch_contents,
+                sch_date:formData.sch_date,
+                sch_time:formData.sch_time,
+                sch_title:formData.sch_title
+            })
+            .then((res)=>{
+                //戻り値をtodosにセット
+                const tempPosts = post
+                tempPosts.push(res.data);
+                setPosts(tempPosts)
+                setFormData('');
+            })
+            .catch(error=>{
+                console.log(error);
+            })
+    }
+
+    return (
+        <Button href="/top" onClick={createSchedule}>Subscribe</Button>
+    );
+}
+
+export default Register;

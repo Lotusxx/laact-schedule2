@@ -6,6 +6,7 @@ import Navigation from './/navigation/Navigation';
 import Scheduledetail from './/schedule/Scheduledetail';
 import Registerdis from './/register/Registerdis';
 import Updatedis from './/update/Updatedis';
+import GetSchedule from './/schedule/GetSchedule';
 
 function Example(){
     const [year,setYear] = useState(new Date().getFullYear())
@@ -19,40 +20,8 @@ function Example(){
 
     const calendar = createCalendear(year,month)
 
-    //スケジュールのデータ
-    const [schedules,setSche] = useState([])
-
-    //画面読み込み時に、1度だけ起動
-    useEffect(()=>{
-        getPostData();
-    },[])
-
-    //バックエンドからデータ一覧を取得
-    const getPostData = () =>{
-        axios
-        .get('/api/posts')
-        .then(response=>{
-            setSche(response.data); //バックエンドからのデータでスケジュールを更新
-            console.log(response.data); //確認用ログ
-        }).catch(()=>{
-            console.log('通信に失敗しました');
-        });
-    }
-
-    //データ格納の空配列を作成
-    let rows = [];
-
-    //スケジュールデータをrowに格納する
-    schedules.map((post)=>
-        rows.push({
-            sch_id:post.id,
-            sch_category:post.sch_category,
-            sch_contents:post.sch_contents,
-            sch_date:post.sch_date,
-            sch_time:post.sch_time,
-            sch_title:post.sch_title
-        })
-    );
+    //スケジュールのデータを取得する
+    let rows = GetSchedule();
 
     //新規登録用データ配列
     const [formData,setFormData] = useState({sch_category:'',sch_contents:'',sch_date:'',sch_time:'',sch_title:''});

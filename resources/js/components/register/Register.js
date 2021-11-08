@@ -17,7 +17,7 @@ function Register(props){
                 sch_category:formData.sch_category,
                 sch_contents:formData.sch_contents,
                 sch_date:formData.sch_date,
-                sch_time:formData.sch_time,
+                sch_time:formData.sch_hour + ':' + formData.sch_min,
                 sch_title:formData.sch_title
             })
             .then((res)=>{

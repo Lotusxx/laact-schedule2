@@ -24,7 +24,7 @@ function Example(){
     let rows = GetSchedule();
 
     //新規登録用データ配列
-    const [formData,setFormData] = useState({sch_category:'',sch_contents:'',sch_date:'',sch_time:'',sch_title:''});
+    const [formData,setFormData] = useState({sch_category:'',sch_contents:'',sch_date:'',sch_hour:'',sch_min:'',sch_title:''});
 
     //新規登録用ダイアログ開閉処理
     const[open,setOpen] = useState(false);
@@ -56,7 +56,7 @@ function Example(){
     };
 
     //更新用のデータ配列
-    const [editData,setEditData] = useState({id:'',sch_category:'',sch_contents:'',sch_date:'',sch_time:'',sch_title:''});
+    const [editData,setEditData] = useState({id:'',sch_category:'',sch_contents:'',sch_date:'',sch_hour:'',sch_min:'',sch_title:''});
 
     //バックエンドからデータ一覧を取得
     function getEditData(e){
@@ -65,7 +65,15 @@ function Example(){
                 id: e.currentTarget.id
             })
             .then(res => {
-                setEditData(res.data);
+                setEditData({
+                    id:res.data.id,
+                    sch_category:res.data.sch_category,
+                    sch_contents:res.data.sch_contents,
+                    sch_date:res.data.sch_date,
+                    sch_hour:res.data.sch_time.substr(0,2),
+                    sch_min:res.data.sch_time.substr(3,2),
+                    sch_title:res.data.sch_title
+                });
             })
             .catch(() => {
                 console.log('通信に失敗しました');
@@ -85,7 +93,7 @@ function Example(){
                     {calendar.map((week,i) => (
                         <tr key={week.join('')}>
                             {week.map((day,j) => (
-                                <td key={`${i}${j}`} id={day} className={thisyear == year && thismonth == month && nowday == day && 'today'}  onClick={handleClickOpen}>
+                                <td key={`${i}${j}`} id={day} className={thisyear == year && thismonth == month && nowday == day ? 'today' : undefined}  onClick={handleClickOpen}>
                                     <div>
                                         <div className={day <= 0 || day > last ? 'nschedule-date':'schedule-date'}>
                                             {day > last ? day - last : day <= 0 ? prevlast + day : day}

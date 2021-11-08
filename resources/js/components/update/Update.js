@@ -18,7 +18,7 @@ function Update(props){
                 sch_category:editData.sch_category,
                 sch_contents:editData.sch_contents,
                 sch_date:editData.sch_date,
-                sch_time:editData.sch_time,
+                sch_time:editData.sch_hour + ':' + editData.sch_min,
                 sch_title:editData.sch_title
             })
             .then((res)=>{

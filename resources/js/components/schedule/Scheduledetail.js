@@ -18,7 +18,7 @@ function Scheduledetail(props){
     //スケジュール出力
     for(let i=0;i<rows.length;i++){
         if(rows[i].sch_date == year + '-' + month + '-' + zeroPadding(day) && schenum < 3){
-            items.push(<div className='schedule-title' onClick={editHandleClickOpen} id={rows[i].sch_id}>{cutString(rows[i].sch_title)}</div>);
+            items.push(<div className='schedule-title' onClick={editHandleClickOpen} id={rows[i].sch_id} key={i}>{cutString(rows[i].sch_title)}</div>);
             schenum++
         }else if(schenum == 3){
             items.push(<div>+{totalschenum-3}more</div>)

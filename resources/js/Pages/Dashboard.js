@@ -93,6 +93,8 @@ function Dashboard(props){
             <Head title="Dashboard" />
         
             <Fragment>
+                <p>{props.auth.user.name}</p>
+                <p>{props.auth.user.id}</p>
                 <Navigation year={year} month={month} setYear={setYear} setMonth={setMonth}/>
                 <table className="calender-table">
                     <thead>

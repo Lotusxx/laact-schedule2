@@ -8,7 +8,7 @@ function Update(props){
     //ダイアログデータを登録
     const updateSchedule = async() => {
         //空なら弾く
-        if(editData==''){
+        if(editData.sch_title==''){
             return;
         }
         //入力値を投げる
@@ -31,7 +31,7 @@ function Update(props){
     }
 
     return (
-        <Button href="/top" onClick={updateSchedule}>Subscribe</Button>
+        <Button href="/dashboard" onClick={updateSchedule}>Subscribe</Button>
     );
 }
 

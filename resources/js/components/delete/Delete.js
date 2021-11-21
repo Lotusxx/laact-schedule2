@@ -22,7 +22,7 @@ function Delete(props){
     }
 
     return (
-        <Button href="/top" onClick={deletePost}>Delete</Button>
+        <Button href="/dashboard" onClick={deletePost}>Delete</Button>
     );
 }
 

@@ -1,7 +1,16 @@
+main{
+    width:80%;
+    margin:0 auto;
+}
+
 .calender-header{
+    width:80%;
     display: flex;
     justify-content: space-between;
-    margin:0 0 1rem 0;
+    margin:10px auto 1rem auto;
+    h1{
+        font-size:2rem;
+    }
     .calender-nav{
         display: flex;
         justify-content: end;
@@ -15,7 +24,7 @@
 }
 
 .calender-table{
-    width:100%;
+    width:80%;
     margin:0 auto;
     text-align: left;
     thead{

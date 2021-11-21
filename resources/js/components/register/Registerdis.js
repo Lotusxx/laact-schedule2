@@ -37,7 +37,7 @@ function Registerdis(props){
                 </DialogContentText>
                 <TextField margin="dense" id="sch_date" name="sch_date" label="予定日" type="text" fullWidth variant="standard" value={data.sch_date} onChange={inputChange}/>
                 <InputLabel id="sch_time_label">時刻</InputLabel>
-                <Select labelId="sch_hour" id="sch_hour_select" name="sch_hour" label="Hour" variant="standard" defaultValue="00" value={data.sch_hour} onChange={inputChange}>
+                <Select labelId="sch_hour" id="sch_hour_select" name="sch_hour" label="Hour" variant="standard" defaultValue="00" onChange={inputChange}>
                     <MenuItem value="00">00</MenuItem>
                     <MenuItem value="01">01</MenuItem><MenuItem value="02">02</MenuItem><MenuItem value="03">03</MenuItem><MenuItem value="04">04</MenuItem>
                     <MenuItem value="05">05</MenuItem><MenuItem value="06">06</MenuItem><MenuItem value="07">07</MenuItem><MenuItem value="08">08</MenuItem>
@@ -46,7 +46,7 @@ function Registerdis(props){
                     <MenuItem value="17">17</MenuItem><MenuItem value="18">18</MenuItem><MenuItem value="19">19</MenuItem><MenuItem value="20">20</MenuItem>
                     <MenuItem value="21">21</MenuItem><MenuItem value="22">22</MenuItem><MenuItem value="23">23</MenuItem>
                 </Select>
-                <Select labelId="sch_min" id="sch_min_select" name="sch_min" label="Min" variant="standard" defaultValue="00" value={data.sch_min} onChange={inputChange}>
+                <Select labelId="sch_min" id="sch_min_select" name="sch_min" label="Min" variant="standard" defaultValue="00" onChange={inputChange}>
                     <MenuItem value=""></MenuItem>
                     <MenuItem value="00">00</MenuItem>
                     <MenuItem value="01">01</MenuItem><MenuItem value="02">02</MenuItem><MenuItem value="03">03</MenuItem><MenuItem value="04">04</MenuItem>
@@ -66,13 +66,13 @@ function Registerdis(props){
                     <MenuItem value="57">57</MenuItem><MenuItem value="58">58</MenuItem><MenuItem value="59">59</MenuItem>
                 </Select>
                 <InputLabel id="sch_category_label">カテゴリー</InputLabel>
-                <Select labelId="sch_category" id="sch_category_select" name="sch_category" label="Category" variant="standard" defaultValue="勉強" value={data.sch_category} onChange={inputChange}>
+                <Select labelId="sch_category" id="sch_category_select" name="sch_category" label="Category" variant="standard" defaultValue="勉強" onChange={inputChange}>
                     <MenuItem value="勉強">勉強</MenuItem>
                     <MenuItem value="案件">案件</MenuItem>
                     <MenuItem value="テスト">テスト</MenuItem>
                 </Select>
-                <TextField margin="dense" id="sch_title" name="sch_title" label="タイトル" type="text" fullWidth variant="standard" value={data.sch_title} onChange={inputChange}/>
-                <TextField margin="dense" id="sch_contents" name="sch_contents" label="内容" type="text" fullWidth variant="standard"  value={data.sch_contents} onChange={inputChange}/>
+                <TextField margin="dense" id="sch_title" name="sch_title" label="タイトル" type="text" fullWidth variant="standard" onChange={inputChange}/>
+                <TextField margin="dense" id="sch_contents" name="sch_contents" label="内容" type="text" fullWidth variant="standard" onChange={inputChange}/>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>

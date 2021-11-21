@@ -7,8 +7,8 @@ function Register(props){
 
     //ダイアログデータを登録
     const createSchedule = async() => {
-        //空なら弾く
-        if(formData==''){
+        //タイトルが空なら弾く
+        if(formData.sch_title==''){
             return;
         }
         //入力値を投げる
@@ -33,7 +33,7 @@ function Register(props){
     }
 
     return (
-        <Button href="/top" onClick={createSchedule}>Subscribe</Button>
+        <Button href="/dashboard" onClick={createSchedule}>Subscribe</Button>
     );
 }
 

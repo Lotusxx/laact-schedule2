@@ -1,4 +1,3 @@
-.calender-table{
-    width:80%;
-    margin:0 auto;
-}
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';

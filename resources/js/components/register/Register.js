@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 function Register(props){
     const{formData}=props;
 
+    console.log(formData);
     //ダイアログデータを登録
     const createSchedule = async() => {
         //タイトルが空なら弾く
@@ -18,11 +19,12 @@ function Register(props){
                 sch_contents:formData.sch_contents,
                 sch_date:formData.sch_date,
                 sch_time:formData.sch_hour + ':' + formData.sch_min,
-                sch_title:formData.sch_title
+                sch_title:formData.sch_title,
+                user_id:formData.userid
             })
             .then((res)=>{
                 //戻り値をtodosにセット
-                const tempPosts = post
+                const tempPosts = post;
                 tempPosts.push(res.data);
                 setPosts(tempPosts)
                 setFormData('');

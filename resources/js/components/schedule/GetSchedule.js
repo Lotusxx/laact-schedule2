@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from 'react';
 import axios from 'axios';
 
-function GetSchedule(){
-
+function GetSchedule(props){
+    const userid = props;
     //スケジュールのデータ
     const [schedules,setSche] = useState([])
 
@@ -14,7 +14,9 @@ function GetSchedule(){
     //バックエンドからデータ一覧を取得
     const getPostData = () =>{
         axios
-        .get('/api/posts')
+        .post('/api/posts',{
+            user_id:userid //ログインユーザー情報のみ取得
+        })
         .then(response=>{
             setSche(response.data); //バックエンドからのデータでスケジュールを更新
             console.log(response.data); //確認用ログ

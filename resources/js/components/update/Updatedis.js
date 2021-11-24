@@ -14,7 +14,7 @@ import Update from './Update';
 import Delete from '../delete/Delete';
 
 function Updatedis(props){
-    const{onClose,open,data,setEditData}=props;
+    const{onClose,open,data,setEditData,userid}=props;
 
     const handleClose = () =>{
         onClose();
@@ -77,7 +77,7 @@ function Updatedis(props){
             <DialogActions>
                 <Delete editData={data}　/>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Update editData={data}　/>
+                <Update editData={data} />
             </DialogActions>
         </Dialog>
     );

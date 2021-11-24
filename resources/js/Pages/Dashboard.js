@@ -24,10 +24,11 @@ function Dashboard(props){
     const calendar = createCalendear(year,month)
 
     //スケジュールのデータを取得する
-    let rows = GetSchedule();
+    const userid = props.auth.user.id;
+    let rows = GetSchedule(userid);
 
     //新規登録用データ配列
-    const [formData,setFormData] = useState({sch_category:'',sch_contents:'',sch_date:'',sch_hour:'',sch_min:'',sch_title:''});
+    const [formData,setFormData] = useState({sch_category:'',sch_contents:'',sch_date:'',sch_hour:'',sch_min:'',sch_title:'',userid:''});
 
     //新規登録用ダイアログ開閉処理
     const[open,setOpen] = useState(false);
@@ -38,7 +39,7 @@ function Dashboard(props){
             return;
         }
         setOpen(true);
-        setFormData({sch_date : year + '-' + zeroPadding(month) + '-' + e.currentTarget.id,sch_category:'勉強',sch_hour:'00',sch_min:'00',sch_contents:''});
+        setFormData({sch_date : year + '-' + zeroPadding(month) + '-' + e.currentTarget.id,sch_category:'勉強',sch_hour:'00',sch_min:'00',sch_contents:'',userid:userid});
     };
 
     const handleClose = () =>{
@@ -93,8 +94,6 @@ function Dashboard(props){
             <Head title="Dashboard" />
         
             <Fragment>
-                <p>{props.auth.user.name}</p>
-                <p>{props.auth.user.id}</p>
                 <Navigation year={year} month={month} setYear={setYear} setMonth={setMonth}/>
                 <table className="calender-table">
                     <thead>
@@ -132,6 +131,7 @@ function Dashboard(props){
                     onClose={editHandleClose}
                     data = {editData}
                     setEditData = {setEditData}
+                    userid = {userid}
                 />
             </Fragment>
         </Authenticated>

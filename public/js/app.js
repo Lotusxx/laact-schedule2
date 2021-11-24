@@ -25598,7 +25598,8 @@ function Dashboard(props) {
   var nowday = new Date().getDate();
   var calendar = createCalendear(year, month); //スケジュールのデータを取得する
 
-  var rows = (0,_components_schedule_GetSchedule__WEBPACK_IMPORTED_MODULE_10__["default"])(); //新規登録用データ配列
+  var userid = props.auth.user.id;
+  var rows = (0,_components_schedule_GetSchedule__WEBPACK_IMPORTED_MODULE_10__["default"])(userid); //新規登録用データ配列
 
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)({
     sch_category: '',
@@ -25606,7 +25607,8 @@ function Dashboard(props) {
     sch_date: '',
     sch_hour: '',
     sch_min: '',
-    sch_title: ''
+    sch_title: '',
+    userid: ''
   }),
       _useState6 = _slicedToArray(_useState5, 2),
       formData = _useState6[0],
@@ -25630,7 +25632,8 @@ function Dashboard(props) {
       sch_category: '勉強',
       sch_hour: '00',
       sch_min: '00',
-      sch_contents: ''
+      sch_contents: '',
+      userid: userid
     });
   };
 
@@ -25697,11 +25700,7 @@ function Dashboard(props) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Head, {
       title: "Dashboard"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(react__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("p", {
-        children: props.auth.user.name
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("p", {
-        children: props.auth.user.id
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_components_navigation_Navigation__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_components_navigation_Navigation__WEBPACK_IMPORTED_MODULE_6__["default"], {
         year: year,
         month: month,
         setYear: setYear,
@@ -25763,7 +25762,8 @@ function Dashboard(props) {
         open: editopen,
         onClose: editHandleClose,
         data: editData,
-        setEditData: setEditData
+        setEditData: setEditData,
+        userid: userid
       })]
     })]
   });
@@ -26340,7 +26340,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 function Register(props) {
-  var formData = props.formData; //ダイアログデータを登録
+  var formData = props.formData;
+  console.log(formData); //ダイアログデータを登録
 
   var createSchedule = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -26362,7 +26363,8 @@ function Register(props) {
                 sch_contents: formData.sch_contents,
                 sch_date: formData.sch_date,
                 sch_time: formData.sch_hour + ':' + formData.sch_min,
-                sch_title: formData.sch_title
+                sch_title: formData.sch_title,
+                user_id: formData.userid
               }).then(function (res) {
                 //戻り値をtodosにセット
                 var tempPosts = post;
@@ -26839,8 +26841,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function GetSchedule() {
-  //スケジュールのデータ
+function GetSchedule(props) {
+  var userid = props; //スケジュールのデータ
+
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
       schedules = _useState2[0],
@@ -26852,7 +26855,10 @@ function GetSchedule() {
   }, []); //バックエンドからデータ一覧を取得
 
   var getPostData = function getPostData() {
-    axios__WEBPACK_IMPORTED_MODULE_1___default().get('/api/posts').then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/posts', {
+      user_id: userid //ログインユーザー情報のみ取得
+
+    }).then(function (response) {
       setSche(response.data); //バックエンドからのデータでスケジュールを更新
 
       console.log(response.data); //確認用ログ
@@ -27075,7 +27081,8 @@ function Updatedis(props) {
   var onClose = props.onClose,
       open = props.open,
       data = props.data,
-      setEditData = props.setEditData;
+      setEditData = props.setEditData,
+      userid = props.userid;
 
   var handleClose = function handleClose() {
     onClose();

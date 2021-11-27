@@ -25553,6 +25553,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_register_Registerdis__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/register/Registerdis */ "./resources/js/components/register/Registerdis.js");
 /* harmony import */ var _components_update_Updatedis__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/update/Updatedis */ "./resources/js/components/update/Updatedis.js");
 /* harmony import */ var _components_schedule_GetSchedule__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../components/schedule/GetSchedule */ "./resources/js/components/schedule/GetSchedule.js");
+/* harmony import */ var _mui_material_Popover__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/material/Popover */ "./node_modules/@mui/material/Popover/Popover.js");
+/* harmony import */ var _mui_material_Typography__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mui/material/Typography */ "./node_modules/@mui/material/Typography/Typography.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -25565,6 +25567,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
@@ -25688,8 +25692,25 @@ function Dashboard(props) {
     })["catch"](function () {
       console.log('通信に失敗しました');
     });
-  }
+  } //POPUP開閉機能
 
+
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_2__.useState(null),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      anchorEl = _React$useState2[0],
+      setAnchorEl = _React$useState2[1];
+
+  var popupClick = function popupClick(event) {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+
+  var popupClose = function popupClose() {
+    setAnchorEl(null);
+  };
+
+  var popupOpen = Boolean(anchorEl);
+  var id = popupOpen ? 'simple-popover' : undefined;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(_Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_0__["default"], {
     auth: props.auth,
     errors: props.errors,
@@ -25744,7 +25765,8 @@ function Dashboard(props) {
                         year: year,
                         month: month,
                         day: day,
-                        editHandleClickOpen: editHandleClickOpen
+                        editHandleClickOpen: editHandleClickOpen,
+                        popupClick: popupClick
                       })
                     })]
                   })
@@ -25764,6 +25786,21 @@ function Dashboard(props) {
         data: editData,
         setEditData: setEditData,
         userid: userid
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_mui_material_Popover__WEBPACK_IMPORTED_MODULE_12__["default"], {
+        id: id,
+        open: popupOpen,
+        anchorEl: anchorEl,
+        onClose: popupClose,
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'left'
+        },
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_13__["default"], {
+          sx: {
+            p: 2
+          },
+          children: "The content of the Popover."
+        })
       })]
     })]
   });
@@ -26467,7 +26504,7 @@ function Registerdis(props) {
       children: "Subscribe"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material_DialogContent__WEBPACK_IMPORTED_MODULE_6__["default"], {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material_DialogContentText__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        children: "To subscribe to this website, please enter your email address here. We will send updates occasionally."
+        children: "\u30B9\u30B1\u30B8\u30E5\u30FC\u30EB\u767B\u9332"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_8__["default"], {
         margin: "dense",
         id: "sch_date",
@@ -26911,7 +26948,8 @@ function Scheduledetail(props) {
       year = props.year,
       month = props.month,
       day = props.day,
-      editHandleClickOpen = props.editHandleClickOpen;
+      editHandleClickOpen = props.editHandleClickOpen,
+      popupClick = props.popupClick;
   var items = [];
   var schenum = 0;
   var totalschenum = 0; //スケジュール数把握
@@ -26934,6 +26972,7 @@ function Scheduledetail(props) {
       schenum++;
     } else if (schenum == 3) {
       items.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        onClick: popupClick,
         children: ["+", totalschenum - 3, "more"]
       }));
       schenum++;
@@ -27104,7 +27143,7 @@ function Updatedis(props) {
       children: "Subscribe"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_mui_material_DialogContent__WEBPACK_IMPORTED_MODULE_7__["default"], {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_mui_material_DialogContentText__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        children: "To subscribe to this website, please enter your email address here. We will send updates occasionally."
+        children: "\u30B9\u30B1\u30B8\u30E5\u30FC\u30EB\u66F4\u65B0"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_9__["default"], {
         margin: "dense",
         id: "sch_date",

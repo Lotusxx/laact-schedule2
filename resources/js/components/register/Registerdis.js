@@ -33,7 +33,7 @@ function Registerdis(props){
             <DialogTitle>Subscribe</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                To subscribe to this website, please enter your email address here. We will send updates occasionally.
+                スケジュール登録
                 </DialogContentText>
                 <TextField margin="dense" id="sch_date" name="sch_date" label="予定日" type="text" fullWidth variant="standard" value={data.sch_date} onChange={inputChange}/>
                 <InputLabel id="sch_time_label">時刻</InputLabel>

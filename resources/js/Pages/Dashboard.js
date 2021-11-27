@@ -10,6 +10,8 @@ import Scheduledetail from '../components/schedule/Scheduledetail';
 import Registerdis from '../components/register/Registerdis';
 import Updatedis from '../components/update/Updatedis';
 import GetSchedule from '../components/schedule/GetSchedule';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
 
 function Dashboard(props){
     const [year,setYear] = useState(new Date().getFullYear())
@@ -84,6 +86,21 @@ function Dashboard(props){
             });
     }
 
+    //POPUP開閉機能
+    const[anchorEl, setAnchorEl] = React.useState(null);
+
+    const popupClick = (event) => {
+        event.stopPropagation();
+        setAnchorEl(event.currentTarget);
+    };
+
+    const popupClose = () => {
+    setAnchorEl(null);
+    };
+
+    const popupOpen = Boolean(anchorEl);
+    const id = popupOpen ? 'simple-popover' : undefined;
+
     return (
 
         <Authenticated
@@ -111,7 +128,7 @@ function Dashboard(props){
                                                 {day > last ? day - last : day <= 0 ? prevlast + day : day}
                                             </div>
                                             <div className="schedule-area"> 
-                                                <Scheduledetail rows={rows} year={year} month={month} day={day} editHandleClickOpen={editHandleClickOpen} />
+                                                <Scheduledetail rows={rows} year={year} month={month} day={day} editHandleClickOpen={editHandleClickOpen} popupClick={popupClick}/>
                                             </div>
                                         </div>
                                     </td>
@@ -133,6 +150,18 @@ function Dashboard(props){
                     setEditData = {setEditData}
                     userid = {userid}
                 />
+                <Popover
+                    id={id}
+                    open={popupOpen}
+                    anchorEl={anchorEl}
+                    onClose={popupClose}
+                    anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                    }}
+                >
+                    <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+                </Popover>
             </Fragment>
         </Authenticated>
     );

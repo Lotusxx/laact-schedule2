@@ -25553,8 +25553,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_register_Registerdis__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/register/Registerdis */ "./resources/js/components/register/Registerdis.js");
 /* harmony import */ var _components_update_Updatedis__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/update/Updatedis */ "./resources/js/components/update/Updatedis.js");
 /* harmony import */ var _components_schedule_GetSchedule__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../components/schedule/GetSchedule */ "./resources/js/components/schedule/GetSchedule.js");
-/* harmony import */ var _mui_material_Popover__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/material/Popover */ "./node_modules/@mui/material/Popover/Popover.js");
-/* harmony import */ var _mui_material_Typography__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mui/material/Typography */ "./node_modules/@mui/material/Typography/Typography.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -25705,7 +25703,8 @@ function Dashboard(props) {
     setAnchorEl(event.currentTarget);
   };
 
-  var popupClose = function popupClose() {
+  var popupClose = function popupClose(e) {
+    e.stopPropagation();
     setAnchorEl(null);
   };
 
@@ -25766,7 +25765,11 @@ function Dashboard(props) {
                         month: month,
                         day: day,
                         editHandleClickOpen: editHandleClickOpen,
-                        popupClick: popupClick
+                        popupClick: popupClick,
+                        id: id,
+                        popupOpen: popupOpen,
+                        anchorEl: anchorEl,
+                        popupClose: popupClose
                       })
                     })]
                   })
@@ -25786,21 +25789,6 @@ function Dashboard(props) {
         data: editData,
         setEditData: setEditData,
         userid: userid
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_mui_material_Popover__WEBPACK_IMPORTED_MODULE_12__["default"], {
-        id: id,
-        open: popupOpen,
-        anchorEl: anchorEl,
-        onClose: popupClose,
-        anchorOrigin: {
-          vertical: 'bottom',
-          horizontal: 'left'
-        },
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_13__["default"], {
-          sx: {
-            p: 2
-          },
-          children: "The content of the Popover."
-        })
       })]
     })]
   });
@@ -26937,7 +26925,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _common_Common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ..//common/Common */ "./resources/js/components/common/Common.js");
+/* harmony import */ var _mui_material_Popover__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/material/Popover */ "./node_modules/@mui/material/Popover/Popover.js");
+/* harmony import */ var _mui_material_Typography__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material/Typography */ "./node_modules/@mui/material/Typography/Typography.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
 
 
 
@@ -26949,8 +26941,13 @@ function Scheduledetail(props) {
       month = props.month,
       day = props.day,
       editHandleClickOpen = props.editHandleClickOpen,
-      popupClick = props.popupClick;
+      popupClick = props.popupClick,
+      id = props.id,
+      popupOpen = props.popupOpen,
+      anchorEl = props.anchorEl,
+      popupClose = props.popupClose;
   var items = [];
+  var pItems = [];
   var schenum = 0;
   var totalschenum = 0; //スケジュール数把握
 
@@ -26970,12 +26967,53 @@ function Scheduledetail(props) {
         children: (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.cutString)(rows[_i].sch_title)
       }, _i));
       schenum++;
-    } else if (schenum == 3) {
+    } else if (rows[_i].sch_date == year + '-' + month + '-' + (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.zeroPadding)(day) && schenum == 3) {
       items.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         onClick: popupClick,
         children: ["+", totalschenum - 3, "more"]
       }));
+      pItems.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "schedule-title",
+        onClick: editHandleClickOpen,
+        id: rows[_i].sch_id,
+        children: (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.cutString)(rows[_i].sch_title)
+      }, _i));
       schenum++;
+    } else if (rows[_i].sch_date == year + '-' + month + '-' + (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.zeroPadding)(day) && 3 < schenum && schenum < totalschenum - 1) {
+      pItems.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "schedule-title",
+        onClick: editHandleClickOpen,
+        id: rows[_i].sch_id,
+        children: (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.cutString)(rows[_i].sch_title)
+      }, _i));
+      schenum++;
+    } else if (rows[_i].sch_date == year + '-' + month + '-' + (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.zeroPadding)(day) && schenum == totalschenum - 1) {
+      pItems.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "schedule-title",
+        onClick: editHandleClickOpen,
+        id: rows[_i].sch_id,
+        children: (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.cutString)(rows[_i].sch_title)
+      }, _i));
+      items.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_mui_material_Popover__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        id: id,
+        open: popupOpen,
+        anchorEl: anchorEl,
+        onClose: popupClose,
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'left'
+        },
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_mui_material_Typography__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          sx: {
+            p: 2
+          },
+          children: pItems.map(function (item, j) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
+              children: item
+            }, j);
+          })
+        })
+      }));
     }
   }
 

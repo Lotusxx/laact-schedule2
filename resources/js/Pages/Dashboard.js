@@ -94,7 +94,8 @@ function Dashboard(props){
         setAnchorEl(event.currentTarget);
     };
 
-    const popupClose = () => {
+    const popupClose = (e) => {
+    e.stopPropagation();
     setAnchorEl(null);
     };
 
@@ -128,7 +129,7 @@ function Dashboard(props){
                                                 {day > last ? day - last : day <= 0 ? prevlast + day : day}
                                             </div>
                                             <div className="schedule-area"> 
-                                                <Scheduledetail rows={rows} year={year} month={month} day={day} editHandleClickOpen={editHandleClickOpen} popupClick={popupClick}/>
+                                                <Scheduledetail rows={rows} year={year} month={month} day={day} editHandleClickOpen={editHandleClickOpen} popupClick={popupClick} id={id} popupOpen={popupOpen} anchorEl={anchorEl} popupClose={popupClose}/>
                                             </div>
                                         </div>
                                     </td>
@@ -150,18 +151,6 @@ function Dashboard(props){
                     setEditData = {setEditData}
                     userid = {userid}
                 />
-                <Popover
-                    id={id}
-                    open={popupOpen}
-                    anchorEl={anchorEl}
-                    onClose={popupClose}
-                    anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                    }}
-                >
-                    <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
-                </Popover>
             </Fragment>
         </Authenticated>
     );

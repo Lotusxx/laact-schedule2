@@ -25696,15 +25696,23 @@ function Dashboard(props) {
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_2__.useState(null),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       anchorEl = _React$useState2[0],
-      setAnchorEl = _React$useState2[1];
+      setAnchorEl = _React$useState2[1]; //どのpopupを表示するかの管理
 
-  var popupClick = function popupClick(event) {
-    event.stopPropagation();
-    setAnchorEl(event.currentTarget);
+
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_2__.useState(null),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      openedPopoverId = _React$useState4[0],
+      setOpenedPopoverId = _React$useState4[1];
+
+  var popupClick = function popupClick(e) {
+    e.stopPropagation();
+    setOpenedPopoverId(e.currentTarget.id);
+    setAnchorEl(e.currentTarget);
   };
 
   var popupClose = function popupClose(e) {
     e.stopPropagation();
+    setOpenedPopoverId(null);
     setAnchorEl(null);
   };
 
@@ -25769,7 +25777,8 @@ function Dashboard(props) {
                         id: id,
                         popupOpen: popupOpen,
                         anchorEl: anchorEl,
-                        popupClose: popupClose
+                        popupClose: popupClose,
+                        openedPopoverId: openedPopoverId
                       })
                     })]
                   })
@@ -26945,7 +26954,8 @@ function Scheduledetail(props) {
       id = props.id,
       popupOpen = props.popupOpen,
       anchorEl = props.anchorEl,
-      popupClose = props.popupClose;
+      popupClose = props.popupClose,
+      openedPopoverId = props.openedPopoverId;
   var items = [];
   var pItems = [];
   var schenum = 0;
@@ -26955,8 +26965,9 @@ function Scheduledetail(props) {
     if (rows[i].sch_date == year + '-' + month + '-' + (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.zeroPadding)(day)) {
       totalschenum++;
     }
-  } //スケジュール出力
+  }
 
+  console.log(openedPopoverId); //スケジュール出力
 
   for (var _i = 0; _i < rows.length; _i++) {
     if (rows[_i].sch_date == year + '-' + month + '-' + (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.zeroPadding)(day) && schenum < 3) {
@@ -26967,36 +26978,26 @@ function Scheduledetail(props) {
         children: (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.cutString)(rows[_i].sch_title)
       }, _i));
       schenum++;
-    } else if (rows[_i].sch_date == year + '-' + month + '-' + (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.zeroPadding)(day) && schenum == 3) {
+    } else if (rows[_i].sch_date == year + '-' + month + '-' + (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.zeroPadding)(day) && 3 <= schenum) {
+      pItems.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "schedule-title",
+        onClick: editHandleClickOpen,
+        id: rows[_i].sch_id,
+        children: (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.cutString)(rows[_i].sch_title)
+      }, _i));
+      schenum++;
+    }
+
+    if (rows[_i].sch_date == year + '-' + month + '-' + (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.zeroPadding)(day) && schenum > 3 && schenum == totalschenum) {
       items.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         onClick: popupClick,
+        "aria-describedby": day,
+        id: day,
         children: ["+", totalschenum - 3, "more"]
       }));
-      pItems.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        className: "schedule-title",
-        onClick: editHandleClickOpen,
-        id: rows[_i].sch_id,
-        children: (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.cutString)(rows[_i].sch_title)
-      }, _i));
-      schenum++;
-    } else if (rows[_i].sch_date == year + '-' + month + '-' + (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.zeroPadding)(day) && 3 < schenum && schenum < totalschenum - 1) {
-      pItems.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        className: "schedule-title",
-        onClick: editHandleClickOpen,
-        id: rows[_i].sch_id,
-        children: (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.cutString)(rows[_i].sch_title)
-      }, _i));
-      schenum++;
-    } else if (rows[_i].sch_date == year + '-' + month + '-' + (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.zeroPadding)(day) && schenum == totalschenum - 1) {
-      pItems.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        className: "schedule-title",
-        onClick: editHandleClickOpen,
-        id: rows[_i].sch_id,
-        children: (0,_common_Common__WEBPACK_IMPORTED_MODULE_1__.cutString)(rows[_i].sch_title)
-      }, _i));
       items.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_mui_material_Popover__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        id: id,
-        open: popupOpen,
+        id: day,
+        open: openedPopoverId == day,
         anchorEl: anchorEl,
         onClose: popupClose,
         anchorOrigin: {
@@ -27014,9 +27015,11 @@ function Scheduledetail(props) {
           })
         })
       }));
+      break;
     }
   }
 
+  pItems = [];
   schenum = 0;
   return items;
 }

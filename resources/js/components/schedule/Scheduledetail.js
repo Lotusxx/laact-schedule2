@@ -4,10 +4,10 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 
 function Scheduledetail(props){
-    const{rows,year,month,day,editHandleClickOpen,popupClick,id,popupOpen,anchorEl,popupClose} = props;
+    const{rows,year,month,day,editHandleClickOpen,popupClick,id,popupOpen,anchorEl,popupClose,openedPopoverId} = props;
 
     const items = [];
-    const pItems = [];
+    let pItems = [];
     let schenum = 0;
     let totalschenum = 0;
 
@@ -18,23 +18,22 @@ function Scheduledetail(props){
         }
     }
 
+    console.log(openedPopoverId)
+
     //スケジュール出力
     for(let i=0;i<rows.length;i++){
         if(rows[i].sch_date == year + '-' + month + '-' + zeroPadding(day) && schenum < 3){
             items.push(<div className='schedule-title' onClick={editHandleClickOpen} id={rows[i].sch_id} key={i}>{cutString(rows[i].sch_title)}</div>);
             schenum++;
-        }else if(rows[i].sch_date == year + '-' + month + '-' + zeroPadding(day) && schenum == 3){
-            items.push(<div onClick={popupClick}>+{totalschenum-3}more</div>);
+        }else if(rows[i].sch_date == year + '-' + month + '-' + zeroPadding(day) && 3 <= schenum){
             pItems.push(<div className='schedule-title' onClick={editHandleClickOpen} id={rows[i].sch_id} key={i}>{cutString(rows[i].sch_title)}</div>);
             schenum++;
-        }else if(rows[i].sch_date == year + '-' + month + '-' + zeroPadding(day) && 3 < schenum && schenum < totalschenum-1){
-            pItems.push(<div className='schedule-title' onClick={editHandleClickOpen} id={rows[i].sch_id} key={i}>{cutString(rows[i].sch_title)}</div>);
-            schenum++;
-        }else if(rows[i].sch_date == year + '-' + month + '-' + zeroPadding(day) && schenum == totalschenum-1){
-            pItems.push(<div className='schedule-title' onClick={editHandleClickOpen} id={rows[i].sch_id} key={i}>{cutString(rows[i].sch_title)}</div>);
+        }
+        if(rows[i].sch_date == year + '-' + month + '-' + zeroPadding(day) && schenum > 3 && schenum == totalschenum){
+            items.push(<div onClick={popupClick} aria-describedby={day} id={day}>+{totalschenum-3}more</div>);
             items.push(<Popover
-                id={id}
-                open={popupOpen}
+                id={day}
+                open={openedPopoverId == day}
                 anchorEl={anchorEl}
                 onClose={popupClose}
                 anchorOrigin={{
@@ -45,8 +44,10 @@ function Scheduledetail(props){
                     {pItems.map((item,j) => <li key={j}>{item}</li>)}
                 </Typography>
             </Popover>);
+            break;
         }
     }
+    pItems = [];
     schenum = 0;
     return items;
 }

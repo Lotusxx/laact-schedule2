@@ -88,14 +88,18 @@ function Dashboard(props){
 
     //POPUP開閉機能
     const[anchorEl, setAnchorEl] = React.useState(null);
+    //どのpopupを表示するかの管理
+    const[openedPopoverId, setOpenedPopoverId] = React.useState(null);
 
-    const popupClick = (event) => {
-        event.stopPropagation();
-        setAnchorEl(event.currentTarget);
+    const popupClick = (e) => {
+        e.stopPropagation();
+        setOpenedPopoverId(e.currentTarget.id);
+        setAnchorEl(e.currentTarget);
     };
 
     const popupClose = (e) => {
     e.stopPropagation();
+    setOpenedPopoverId(null);
     setAnchorEl(null);
     };
 
@@ -129,7 +133,7 @@ function Dashboard(props){
                                                 {day > last ? day - last : day <= 0 ? prevlast + day : day}
                                             </div>
                                             <div className="schedule-area"> 
-                                                <Scheduledetail rows={rows} year={year} month={month} day={day} editHandleClickOpen={editHandleClickOpen} popupClick={popupClick} id={id} popupOpen={popupOpen} anchorEl={anchorEl} popupClose={popupClose}/>
+                                                <Scheduledetail rows={rows} year={year} month={month} day={day} editHandleClickOpen={editHandleClickOpen} popupClick={popupClick} id={id} popupOpen={popupOpen} anchorEl={anchorEl} popupClose={popupClose} openedPopoverId={openedPopoverId}/>
                                             </div>
                                         </div>
                                     </td>
